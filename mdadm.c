@@ -7,12 +7,12 @@
 int mounted=0;
 
 int mdadm_mount(void) {
-    if (mounted==1) {
-        return -1;  // Fail if already mounted
+    if(mounted == 1) {
+        return -1; 
     }
-    uint32_t op = (JBOD_MOUNT << 12);
-    int result = jbod_operation(op, NULL);
-    if (result == 0) {
+    if(mounted == 0){
+        jbod_mount()
+        int jbod_operation(uint32_t op, uint8_t *block);
         mounted = 1;
         return 1;
     }
@@ -20,13 +20,10 @@ int mdadm_mount(void) {
 }
 
 int mdadm_unmount(void) {
-    if (mounted==0) {
-        return -1;  // Fail if already unmounted
+    if(mounted == 0){
+        return -1;
     }
-    uint32_t op = (JBOD_UNMOUNT << 12);
-    int result = jbod_operation(op, NULL);
-    if (result == 0) {
-        mounted = 0;
+    if(mounted == 1){
         return 1;
     }
     return -1;
@@ -34,20 +31,7 @@ int mdadm_unmount(void) {
 
 
 int mdadm_read(uint32_t start_addr, uint32_t read_len, uint8_t *read_buf) {
-    // Check if the system is mounted
-    if (mounted == 0) {
-        return -3;  // System not mounted
-    }
-
-    // Check for invalid parameters
-    if (start_addr + read_len > JBOD_DISK_SIZE * JBOD_NUM_DISKS) {
-        return -1;  // Out of bounds
-    }
-    if (read_len > 1024) {
-        return -2;  // Read length exceeds limit
-    }
-    if (read_len > 0 && read_buf == NULL) {
-        return -4;  // Invalid buffer
+    
     }
 
     uint32_t bytes_read = 0;
