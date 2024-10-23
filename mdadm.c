@@ -35,8 +35,18 @@ int mdadm_unmount(void) {
 
 
 int mdadm_read(uint32_t start_addr, uint32_t read_len, uint8_t *read_buf) {
-    
+    if(!mounted == 1){
+        return -3;
     }
+
+    if(read_len > 1024){
+        return -2;
+    }
+
+    if(start_addr + read_len > JBOD_DISK_SIZE*NUMBER_OF_DISKS){
+        return -1;
+    }
+    
 
     uint32_t bytes_read = 0;
     uint32_t current_addr = start_addr;
