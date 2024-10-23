@@ -7,6 +7,7 @@
 int mounted=0;
 
 int mdadm_mount(void) {
+    //check to see if system is mounted already 
     if(mounted == 1) {
         return -1; 
     }
@@ -21,8 +22,9 @@ int mdadm_mount(void) {
 }
 
 int mdadm_unmount(void) {
+    //check to see if system is already unmounted 
     if(mounted == 0){
-        return -1;
+        return -1; //Fail
     }
     uint32_t op = (jbod_unmount);
     int state = jbod_operation(op, NULL);
@@ -46,6 +48,10 @@ int mdadm_read(uint32_t start_addr, uint32_t read_len, uint8_t *read_buf) {
     if(start_addr + read_len > JBOD_DISK_SIZE*NUMBER_OF_DISKS){
         return -1;
     }
+    if(read_len > 0 && read_buf == NULL){
+        return -4; 
+    }
+    
     
 
     uint32_t bytes_read = 0;
