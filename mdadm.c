@@ -35,7 +35,7 @@ int mdadm_unmount(void) {
 
 
 int mdadm_read(uint32_t start_addr, uint32_t read_len, uint8_t *read_buf) {
-    if(!mounted == 1){
+    if(mounted != 1){
         return -3;
     }
 
