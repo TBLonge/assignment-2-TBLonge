@@ -35,8 +35,22 @@ int mdadm_unmount(void) {
     return -1;
 }
 
+int jbod_sequential_read(uint32_t start_addr, uint32_t read_len, uint8_t *read_buf) {
+    uint32_t bytes = 0;
+    while(bytes < JBOD_DISK_SIZE*NUMBER_OF_DISKS){
+        if(start_addr + bytes >= JBOD_DISK_SIZE*NUMBER_OF_DISKS){
+            break;
+        }
+        bytes += 256
+    }
+    return bytes;
+}
+//1. Jbod_sequential_read would be a helper function for mdadm_read, it would use the exsisting format of mdadm_read while iterating through each block until it reaches the maximum disk size.  
+//2. More effecient since mdadm_read won't be called multiple times.
+//3. It would be helpful for any problems that involve iterating through a large data set. 
 
 int mdadm_read(uint32_t start_addr, uint32_t read_len, uint8_t *read_buf) {
+    //Check is system is mounted
     if(mounted != 1){
         return -3;
     }
