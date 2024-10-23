@@ -11,7 +11,7 @@ int mdadm_mount(void) {
         return -1; 
     }
     uint32_t op = (jbod_unmount);
-    int state = int jbod_operation(op, NULL);
+    int state = jbod_operation(op, NULL);
     if(state == 0){
         op();
         mounted = 1;
@@ -25,7 +25,7 @@ int mdadm_unmount(void) {
         return -1;
     }
     uint32_t op = (jbod_unmount);
-    int state = int jbod_operation(op, NULL);
+    int state = jbod_operation(op, NULL);
     if(mounted == 1){
         op();
         return 1;
